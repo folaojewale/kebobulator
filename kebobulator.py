@@ -236,12 +236,12 @@ def format_winners_pretty(winners):
     return lines
 
 
-def build_discord_message(predicted_total, winners, as_of_date):
+def build_discord_message(predicted_total, winners, as_of_date, image_count):
     ranking_lines = format_winners_pretty(winners)
 
     lines = [
         f"**Kebab Prediction Update: {as_of_date.isoformat()}**",
-        "\n",
+        f"**Image count to date: {image_count}**",
         f"**Predicted year-end total: {predicted_total}**",
         "**Prediction Rankings:**",
         "\n".join(ranking_lines),
@@ -359,7 +359,7 @@ if __name__ == "__main__":
 
     webhook_url = os.getenv("DISCORD_WEBHOOK_URL", "").strip()
     if webhook_url:
-        message = build_discord_message(predicted_total, winners, as_of)
+        message = build_discord_message(predicted_total, winners, as_of, eaten)
         sent = send_to_discord(webhook_url, message)
         if sent:
             print("\nPosted prediction to Discord.")

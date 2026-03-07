@@ -81,7 +81,7 @@ class KebobulatorBot(discord.Client):
             as_of,
         )
 
-        message_text = build_discord_message(predicted_total, winners, as_of)
+        message_text = build_discord_message(predicted_total, winners, as_of, eaten)
         sent = await asyncio.to_thread(send_to_discord, self.webhook_url, message_text)
 
         if sent:
