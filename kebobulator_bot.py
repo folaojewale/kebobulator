@@ -90,7 +90,6 @@ class KebobulatorBot(discord.Client):
                 f"{DEFAULT_START_OF_YEAR.isoformat()}: {eaten}"
             )
 
-
 def main():
     load_dotenv()
 
@@ -115,7 +114,6 @@ def main():
 
     bot = KebobulatorBot(channel_id=channel_id, webhook_url=webhook_url, bot_token=bot_token)
     bot.run(bot_token)
-
 
 if __name__ == "__main__":
     main()

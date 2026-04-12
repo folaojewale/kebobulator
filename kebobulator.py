@@ -44,19 +44,10 @@ def possible_winner(kebabs_eaten_to_date, as_of_date=None, filename="values.csv"
     path = os.path.join(script_dir, filename)
     df = pd.read_csv(path)
 
-    # Only guesses <= prediction
-    valid = df[df["value"] <= total].copy()
+    df["dist"] = (df["value"] - total).abs()
 
-    if valid.empty:
-        predicted_values = sorted([(name, 0, value) for name, value in zip(df["name"], df["value"])],
-                                  key=lambda x: x[1], reverse=True)
-        return total, predicted_values
-
-    # distance from predicted value
-    valid["dist"] = total - valid["value"]
-
-    best_dist = valid["dist"].min()
-    worst_dist = valid["dist"].max()
+    best_dist = df["dist"].min()
+    worst_dist = df["dist"].max()
 
     MAX_SCORE = 99
 
@@ -64,16 +55,12 @@ def possible_winner(kebabs_eaten_to_date, as_of_date=None, filename="values.csv"
 
     for name, value in zip(df["name"], df["value"]):
 
-        if value > total:
-            outcome = 0
+        dist = abs(total - value)
 
+        if best_dist == worst_dist:
+            outcome = MAX_SCORE
         else:
-            dist = total - value
-
-            if best_dist == worst_dist:
-                outcome = MAX_SCORE
-            else:
-                outcome = MAX_SCORE * (1 - (dist - best_dist) / (worst_dist - best_dist))
+            outcome = MAX_SCORE * (1 - (dist - best_dist) / (worst_dist - best_dist))
 
         predicted_values.append((name, round(outcome), value))
 
