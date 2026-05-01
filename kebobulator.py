@@ -62,7 +62,7 @@ def possible_winner(kebabs_eaten_to_date, as_of_date=None, filename="values.csv"
         raw_scores.append((name, outcome, value))
 
     scores_array = np.array([s[1] for s in raw_scores])
-    softmax_scores = np.exp(scores_array/scores_array.size()) / np.sum(np.exp(scores_array/scores_array.size())) * 100
+    softmax_scores = np.exp(scores_array/len(scores_array)) / np.sum(np.exp(scores_array/len(scores_array))) * 100
 
     predicted_values = [
         (name, round(softmax_score), value)
