@@ -5,6 +5,7 @@ import urllib.request
 import urllib.error
 import urllib.parse
 import time
+import numpy as np
 from datetime import date, datetime
 
 DEFAULT_START_OF_YEAR = date(2026, 1, 1)
@@ -51,21 +52,22 @@ def possible_winner(kebabs_eaten_to_date, as_of_date=None, filename="values.csv"
 
     MAX_SCORE = 99
 
-    predicted_values = []
-
+    raw_scores = []
     for name, value in zip(df["name"], df["value"]):
-
         dist = abs(total - value)
-
         if best_dist == worst_dist:
             outcome = MAX_SCORE
         else:
             outcome = MAX_SCORE * (1 - (dist - best_dist) / (worst_dist - best_dist))
+        raw_scores.append((name, outcome, value))
 
-        predicted_values.append((name, round(outcome), value))
+    scores_array = np.array([s[1] for s in raw_scores])
+    softmax_scores = np.exp(scores_array) / np.sum(np.exp(scores_array)) * 100
 
-    predicted_values.sort(key=lambda x: x[1], reverse=True)
-
+    predicted_values = [
+        (name, round(softmax_score), value)
+        for (name, _, value), softmax_score in zip(raw_scores, softmax_scores)
+    ]
     return total, predicted_values
 
 
