@@ -68,6 +68,7 @@ def possible_winner(kebabs_eaten_to_date, as_of_date=None, filename="values.csv"
         (name, round(softmax_score), value)
         for (name, _, value), softmax_score in zip(raw_scores, softmax_scores)
     ]
+    predicted_values.sort(key=lambda x:[1], reverse=True)
     return total, predicted_values
 
 
