@@ -220,8 +220,8 @@ def format_winners_pretty(winners):
     for idx, (name, score, guess) in enumerate(winners, start=1):
         visible_prefix = f"{idx:>{rank_width}} {name} : {score:>3}%"
         leader_count = max(4, (max_prefix_len - len(visible_prefix)) + 8)
-        lines.append(f"**{idx:>{rank_width}}**. {name} : {score:>3}% {'.' * leader_count} guess: {guess}")
-
+        lines.append(f"**{idx:>{rank_width}}**. {name} : {score:>3}%")
+        #{'.' * leader_count} guess: {guess} hiding their guesses 
     return lines
 
 
